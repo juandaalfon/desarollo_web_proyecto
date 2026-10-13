@@ -12,7 +12,8 @@ public class ConexionBD {
 
     private static final String URL = "jdbc:mysql://localhost:3306/nombre_basedatos?useSSL=false&serverTimezone=UTC";
     private static final String USUARIO = "root";
-    private static final String PASSWORD = "tu_password";
+    private static final String PASSWORD = "null";
+    
 
     private ConexionBD() {
         // Clase utilitaria: no se debe instanciar.
