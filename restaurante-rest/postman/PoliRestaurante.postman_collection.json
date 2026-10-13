@@ -1,0 +1,1256 @@
+{
+  "info": {
+    "name": "PoliRestaurante API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base",
+      "value": "http://localhost:8080"
+    }
+  ],
+  "item": [
+    {
+      "name": "1 Roles",
+      "item": [
+        {
+          "name": "Listar (GET)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/roles",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "roles"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Buscar por id (GET)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/roles/1",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "roles",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Crear (POST)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base}}/api/roles",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "roles"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombreRol\": \"Mesero\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Reemplazar (PUT)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base}}/api/roles/1",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "roles",
+                "1"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombreRol\": \"Mesero\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Editar parcial (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base}}/api/roles/1",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "roles",
+                "1"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombreRol\": \"Cocina\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Eliminar (DELETE)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/roles/1",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "roles",
+                "1"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2 Usuarios",
+      "item": [
+        {
+          "name": "Listar (GET)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/usuarios",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "usuarios"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Buscar por id (GET)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/usuarios/1",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "usuarios",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Crear (POST)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base}}/api/usuarios",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "usuarios"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Ana Perez\",\n  \"usuarioLogin\": \"ana\",\n  \"contrasenaHash\": \"1234\",\n  \"rol\": {\n    \"idRol\": 1\n  },\n  \"activo\": true\n}"
+            }
+          }
+        },
+        {
+          "name": "Reemplazar (PUT)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base}}/api/usuarios/1",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "usuarios",
+                "1"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Ana Perez\",\n  \"usuarioLogin\": \"ana\",\n  \"contrasenaHash\": \"1234\",\n  \"rol\": {\n    \"idRol\": 1\n  },\n  \"activo\": true\n}"
+            }
+          }
+        },
+        {
+          "name": "Editar parcial (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base}}/api/usuarios/1",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "usuarios",
+                "1"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"activo\": false\n}"
+            }
+          }
+        },
+        {
+          "name": "Eliminar (DELETE)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/usuarios/1",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "usuarios",
+                "1"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3 Mesas",
+      "item": [
+        {
+          "name": "Listar (GET)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/mesas",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "mesas"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Buscar por id (GET)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/mesas/1",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "mesas",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Crear (POST)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base}}/api/mesas",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "mesas"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numero\": 1,\n  \"capacidad\": 4,\n  \"estado\": \"LIBRE\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Reemplazar (PUT)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base}}/api/mesas/1",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "mesas",
+                "1"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numero\": 1,\n  \"capacidad\": 4,\n  \"estado\": \"LIBRE\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Editar parcial (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base}}/api/mesas/1",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "mesas",
+                "1"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"estado\": \"OCUPADA\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Eliminar (DELETE)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/mesas/1",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "mesas",
+                "1"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "4 Categorias",
+      "item": [
+        {
+          "name": "Listar (GET)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/categorias",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "categorias"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Buscar por id (GET)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/categorias/1",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "categorias",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Crear (POST)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base}}/api/categorias",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "categorias"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Bebidas\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Reemplazar (PUT)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base}}/api/categorias/1",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "categorias",
+                "1"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Bebidas\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Editar parcial (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base}}/api/categorias/1",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "categorias",
+                "1"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Postres\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Eliminar (DELETE)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/categorias/1",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "categorias",
+                "1"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "5 Productos",
+      "item": [
+        {
+          "name": "Listar (GET)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/productos",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "productos"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Buscar por id (GET)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/productos/1",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "productos",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Crear (POST)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base}}/api/productos",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "productos"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Limonada\",\n  \"descripcion\": \"Natural\",\n  \"precio\": 6500,\n  \"categoria\": {\n    \"idCategoria\": 1\n  },\n  \"disponible\": true\n}"
+            }
+          }
+        },
+        {
+          "name": "Reemplazar (PUT)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base}}/api/productos/1",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "productos",
+                "1"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Limonada\",\n  \"descripcion\": \"Natural\",\n  \"precio\": 6500,\n  \"categoria\": {\n    \"idCategoria\": 1\n  },\n  \"disponible\": true\n}"
+            }
+          }
+        },
+        {
+          "name": "Editar parcial (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base}}/api/productos/1",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "productos",
+                "1"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"precio\": 7000\n}"
+            }
+          }
+        },
+        {
+          "name": "Eliminar (DELETE)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/productos/1",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "productos",
+                "1"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "6 Pedidos",
+      "item": [
+        {
+          "name": "Listar (GET)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/pedidos",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "pedidos"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Buscar por id (GET)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/pedidos/1",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "pedidos",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Crear (POST)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base}}/api/pedidos",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "pedidos"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"mesa\": {\n    \"idMesa\": 1\n  },\n  \"mesero\": {\n    \"idUsuario\": 1\n  },\n  \"numPersonas\": 2,\n  \"estado\": \"PENDIENTE\",\n  \"fechaCreacion\": \"2026-10-12T19:00:00\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Reemplazar (PUT)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base}}/api/pedidos/1",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "pedidos",
+                "1"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"mesa\": {\n    \"idMesa\": 1\n  },\n  \"mesero\": {\n    \"idUsuario\": 1\n  },\n  \"numPersonas\": 2,\n  \"estado\": \"PENDIENTE\",\n  \"fechaCreacion\": \"2026-10-12T19:00:00\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Editar parcial (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base}}/api/pedidos/1",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "pedidos",
+                "1"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"estado\": \"EN PREPARACION\",\n  \"fechaUltimaActualizacion\": \"2026-10-12T19:05:00\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Eliminar (DELETE)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/pedidos/1",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "pedidos",
+                "1"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "7 Detalle pedido",
+      "item": [
+        {
+          "name": "Listar (GET)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/detalles-pedido",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "detalles-pedido"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Buscar por id (GET)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/detalles-pedido/1",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "detalles-pedido",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Crear (POST)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base}}/api/detalles-pedido",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "detalles-pedido"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pedido\": {\n    \"idPedido\": 1\n  },\n  \"producto\": {\n    \"idProducto\": 1\n  },\n  \"cantidad\": 2,\n  \"notas\": \"sin hielo\",\n  \"precioUnitario\": 6500,\n  \"subtotal\": 13000\n}"
+            }
+          }
+        },
+        {
+          "name": "Reemplazar (PUT)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base}}/api/detalles-pedido/1",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "detalles-pedido",
+                "1"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pedido\": {\n    \"idPedido\": 1\n  },\n  \"producto\": {\n    \"idProducto\": 1\n  },\n  \"cantidad\": 2,\n  \"notas\": \"sin hielo\",\n  \"precioUnitario\": 6500,\n  \"subtotal\": 13000\n}"
+            }
+          }
+        },
+        {
+          "name": "Editar parcial (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base}}/api/detalles-pedido/1",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "detalles-pedido",
+                "1"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cantidad\": 3,\n  \"subtotal\": 19500\n}"
+            }
+          }
+        },
+        {
+          "name": "Eliminar (DELETE)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/detalles-pedido/1",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "detalles-pedido",
+                "1"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "8 Historial estado",
+      "item": [
+        {
+          "name": "Listar (GET)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/historial-estados",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "historial-estados"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Buscar por id (GET)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/historial-estados/1",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "historial-estados",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Crear (POST)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base}}/api/historial-estados",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "historial-estados"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pedido\": {\n    \"idPedido\": 1\n  },\n  \"estado\": \"PENDIENTE\",\n  \"fechaHora\": \"2026-10-12T19:00:00\",\n  \"usuario\": {\n    \"idUsuario\": 1\n  }\n}"
+            }
+          }
+        },
+        {
+          "name": "Reemplazar (PUT)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base}}/api/historial-estados/1",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "historial-estados",
+                "1"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pedido\": {\n    \"idPedido\": 1\n  },\n  \"estado\": \"PENDIENTE\",\n  \"fechaHora\": \"2026-10-12T19:00:00\",\n  \"usuario\": {\n    \"idUsuario\": 1\n  }\n}"
+            }
+          }
+        },
+        {
+          "name": "Editar parcial (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base}}/api/historial-estados/1",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "historial-estados",
+                "1"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"estado\": \"LISTO\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Eliminar (DELETE)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/historial-estados/1",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "historial-estados",
+                "1"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "9 Facturas",
+      "item": [
+        {
+          "name": "Listar (GET)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/facturas",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "facturas"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Buscar por id (GET)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/facturas/1",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "facturas",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Crear (POST)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base}}/api/facturas",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "facturas"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pedido\": {\n    \"idPedido\": 1\n  },\n  \"fechaGeneracion\": \"2026-10-12T20:00:00\",\n  \"total\": 13000,\n  \"usuarioGenera\": {\n    \"idUsuario\": 1\n  }\n}"
+            }
+          }
+        },
+        {
+          "name": "Reemplazar (PUT)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base}}/api/facturas/1",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "facturas",
+                "1"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pedido\": {\n    \"idPedido\": 1\n  },\n  \"fechaGeneracion\": \"2026-10-12T20:00:00\",\n  \"total\": 13000,\n  \"usuarioGenera\": {\n    \"idUsuario\": 1\n  }\n}"
+            }
+          }
+        },
+        {
+          "name": "Editar parcial (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base}}/api/facturas/1",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "facturas",
+                "1"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"total\": 14000\n}"
+            }
+          }
+        },
+        {
+          "name": "Eliminar (DELETE)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/facturas/1",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "facturas",
+                "1"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
