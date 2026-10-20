@@ -1,0 +1,1833 @@
+{
+  "info": {
+    "name": "Restaurante - Pedidos (5 funcionalidades)",
+    "description": "Orden sugerido: 1) RF-01 Login (admin, mesero o cocina). 2) RF-02 Crear pedido. 3) RF-03 Asignar mesa. 4) RF-04 Agregar productos. 5) RF-05 Observaciones. Las variables {{token}}, {{idPedido}} y {{idDetalle}} se llenan solas.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "base",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "token",
+      "value": ""
+    },
+    {
+      "key": "idPedido",
+      "value": "1"
+    },
+    {
+      "key": "idDetalle",
+      "value": "1"
+    }
+  ],
+  "item": [
+    {
+      "name": "RF-01 Autenticación de usuarios",
+      "item": [
+        {
+          "name": "Login",
+          "item": [
+            {
+              "name": "Login administración (admin)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base}}/api/auth/login",
+                  "host": [
+                    "{{base}}"
+                  ],
+                  "path": [
+                    "api",
+                    "auth",
+                    "login"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"usuarioLogin\": \"admin\",\n  \"contrasena\": \"admin123\"\n}"
+                },
+                "auth": {
+                  "type": "noauth"
+                },
+                "description": "Guarda el token en la variable {{token}}; el resto de peticiones lo usan solo."
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "const r = pm.response.json();",
+                      "pm.test('Login correcto (administración)', () => pm.response.to.have.status(200));",
+                      "pm.collectionVariables.set('token', r.token);"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Login mesero (mesero)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base}}/api/auth/login",
+                  "host": [
+                    "{{base}}"
+                  ],
+                  "path": [
+                    "api",
+                    "auth",
+                    "login"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"usuarioLogin\": \"mesero\",\n  \"contrasena\": \"mesero123\"\n}"
+                },
+                "auth": {
+                  "type": "noauth"
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "const r = pm.response.json();",
+                      "pm.test('Login correcto (mesero)', () => pm.response.to.have.status(200));",
+                      "pm.collectionVariables.set('token', r.token);"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Login cocina (cocina)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base}}/api/auth/login",
+                  "host": [
+                    "{{base}}"
+                  ],
+                  "path": [
+                    "api",
+                    "auth",
+                    "login"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"usuarioLogin\": \"cocina\",\n  \"contrasena\": \"cocina123\"\n}"
+                },
+                "auth": {
+                  "type": "noauth"
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "const r = pm.response.json();",
+                      "pm.test('Login correcto (cocina)', () => pm.response.to.have.status(200));",
+                      "pm.collectionVariables.set('token', r.token);"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Login con clave incorrecta (debe dar 401)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base}}/api/auth/login",
+                  "host": [
+                    "{{base}}"
+                  ],
+                  "path": [
+                    "api",
+                    "auth",
+                    "login"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"usuarioLogin\": \"mesero\",\n  \"contrasena\": \"clave-mala\"\n}"
+                },
+                "auth": {
+                  "type": "noauth"
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Rechaza credenciales malas', () => pm.response.to.have.status(401));"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Quién soy (GET)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base}}/api/auth/me",
+                  "host": [
+                    "{{base}}"
+                  ],
+                  "path": [
+                    "api",
+                    "auth",
+                    "me"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Cerrar sesión (POST)",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{base}}/api/auth/logout",
+                  "host": [
+                    "{{base}}"
+                  ],
+                  "path": [
+                    "api",
+                    "auth",
+                    "logout"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Sin token (debe dar 401)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base}}/api/pedidos",
+                  "host": [
+                    "{{base}}"
+                  ],
+                  "path": [
+                    "api",
+                    "pedidos"
+                  ]
+                },
+                "auth": {
+                  "type": "noauth"
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Pide iniciar sesión', () => pm.response.to.have.status(401));"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Mesero intenta listar usuarios (debe dar 403)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base}}/api/usuarios",
+                  "host": [
+                    "{{base}}"
+                  ],
+                  "path": [
+                    "api",
+                    "usuarios"
+                  ]
+                },
+                "description": "Primero haz 'Login mesero'. El mesero no puede ver usuarios; solo administración."
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Rol sin permiso', () => pm.response.to.have.status(403));"
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Roles (solo administración)",
+          "item": [
+            {
+              "name": "Listar (GET)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base}}/api/roles",
+                  "host": [
+                    "{{base}}"
+                  ],
+                  "path": [
+                    "api",
+                    "roles"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Buscar por id (GET)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base}}/api/roles/4",
+                  "host": [
+                    "{{base}}"
+                  ],
+                  "path": [
+                    "api",
+                    "roles",
+                    "4"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Crear (POST)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base}}/api/roles",
+                  "host": [
+                    "{{base}}"
+                  ],
+                  "path": [
+                    "api",
+                    "roles"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nombreRol\": \"Cajero\"\n}"
+                }
+              }
+            },
+            {
+              "name": "Reemplazar (PUT)",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base}}/api/roles/4",
+                  "host": [
+                    "{{base}}"
+                  ],
+                  "path": [
+                    "api",
+                    "roles",
+                    "4"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nombreRol\": \"Cajero\"\n}"
+                }
+              }
+            },
+            {
+              "name": "Editar parcial (PATCH)",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base}}/api/roles/4",
+                  "host": [
+                    "{{base}}"
+                  ],
+                  "path": [
+                    "api",
+                    "roles",
+                    "4"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nombreRol\": \"Cajero 2\"\n}"
+                }
+              }
+            },
+            {
+              "name": "Eliminar (DELETE)",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base}}/api/roles/4",
+                  "host": [
+                    "{{base}}"
+                  ],
+                  "path": [
+                    "api",
+                    "roles",
+                    "4"
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Usuarios (solo administración)",
+          "item": [
+            {
+              "name": "Listar (GET)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base}}/api/usuarios",
+                  "host": [
+                    "{{base}}"
+                  ],
+                  "path": [
+                    "api",
+                    "usuarios"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Buscar por id (GET)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base}}/api/usuarios/4",
+                  "host": [
+                    "{{base}}"
+                  ],
+                  "path": [
+                    "api",
+                    "usuarios",
+                    "4"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Crear (POST)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base}}/api/usuarios",
+                  "host": [
+                    "{{base}}"
+                  ],
+                  "path": [
+                    "api",
+                    "usuarios"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nombre\": \"Ana Gómez\",\n  \"usuarioLogin\": \"ana\",\n  \"contrasenaHash\": \"ana12345\",\n  \"rol\": {\n    \"idRol\": 2\n  },\n  \"activo\": true\n}"
+                }
+              }
+            },
+            {
+              "name": "Reemplazar (PUT)",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base}}/api/usuarios/4",
+                  "host": [
+                    "{{base}}"
+                  ],
+                  "path": [
+                    "api",
+                    "usuarios",
+                    "4"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nombre\": \"Ana Gómez Pérez\",\n  \"usuarioLogin\": \"ana\",\n  \"contrasenaHash\": \"ana12345\",\n  \"rol\": {\n    \"idRol\": 2\n  },\n  \"activo\": true\n}"
+                }
+              }
+            },
+            {
+              "name": "Editar parcial (PATCH)",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base}}/api/usuarios/4",
+                  "host": [
+                    "{{base}}"
+                  ],
+                  "path": [
+                    "api",
+                    "usuarios",
+                    "4"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"activo\": false\n}"
+                }
+              }
+            },
+            {
+              "name": "Eliminar (DELETE)",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base}}/api/usuarios/4",
+                  "host": [
+                    "{{base}}"
+                  ],
+                  "path": [
+                    "api",
+                    "usuarios",
+                    "4"
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "RF-02 Gestión de pedidos",
+      "item": [
+        {
+          "name": "Pedidos",
+          "item": [
+            {
+              "name": "Crear pedido (POST) - login mesero",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base}}/api/pedidos",
+                  "host": [
+                    "{{base}}"
+                  ],
+                  "path": [
+                    "api",
+                    "pedidos"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"mesa\": {\n    \"idMesa\": 1\n  },\n  \"numPersonas\": 2\n}"
+                },
+                "description": "El mesero es quien inició sesión. Nace PENDIENTE y la mesa pasa a OCUPADA."
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Pedido creado', () => pm.response.to.have.status(201));",
+                      "pm.collectionVariables.set('idPedido', pm.response.json().idPedido);"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Listar todos (GET)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base}}/api/pedidos",
+                  "host": [
+                    "{{base}}"
+                  ],
+                  "path": [
+                    "api",
+                    "pedidos"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Listar por estado (GET)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base}}/api/pedidos?estado=PENDIENTE",
+                  "host": [
+                    "{{base}}"
+                  ],
+                  "path": [
+                    "api",
+                    "pedidos"
+                  ],
+                  "query": [
+                    {
+                      "key": "estado",
+                      "value": "PENDIENTE"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Buscar por id (GET)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base}}/api/pedidos/{{idPedido}}",
+                  "host": [
+                    "{{base}}"
+                  ],
+                  "path": [
+                    "api",
+                    "pedidos",
+                    "{{idPedido}}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Pedido con productos y total (GET)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base}}/api/pedidos/{{idPedido}}/detalles",
+                  "host": [
+                    "{{base}}"
+                  ],
+                  "path": [
+                    "api",
+                    "pedidos",
+                    "{{idPedido}}",
+                    "detalles"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Cambiar número de personas (PATCH)",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base}}/api/pedidos/{{idPedido}}",
+                  "host": [
+                    "{{base}}"
+                  ],
+                  "path": [
+                    "api",
+                    "pedidos",
+                    "{{idPedido}}"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"numPersonas\": 3\n}"
+                }
+              }
+            },
+            {
+              "name": "Pasar a EN_PREPARACION (PATCH) - login cocina",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base}}/api/pedidos/{{idPedido}}/estado",
+                  "host": [
+                    "{{base}}"
+                  ],
+                  "path": [
+                    "api",
+                    "pedidos",
+                    "{{idPedido}}",
+                    "estado"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"estado\": \"EN_PREPARACION\"\n}"
+                },
+                "description": "Necesita al menos un producto en el pedido."
+              }
+            },
+            {
+              "name": "Pasar a LISTO (PATCH) - login cocina",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base}}/api/pedidos/{{idPedido}}/estado",
+                  "host": [
+                    "{{base}}"
+                  ],
+                  "path": [
+                    "api",
+                    "pedidos",
+                    "{{idPedido}}",
+                    "estado"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"estado\": \"LISTO\"\n}"
+                }
+              }
+            },
+            {
+              "name": "Pasar a ENTREGADO (PATCH) - login mesero",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base}}/api/pedidos/{{idPedido}}/estado",
+                  "host": [
+                    "{{base}}"
+                  ],
+                  "path": [
+                    "api",
+                    "pedidos",
+                    "{{idPedido}}",
+                    "estado"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"estado\": \"ENTREGADO\"\n}"
+                },
+                "description": "Libera la mesa."
+              }
+            },
+            {
+              "name": "Cancelar pedido (PATCH) - login mesero",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base}}/api/pedidos/{{idPedido}}/estado",
+                  "host": [
+                    "{{base}}"
+                  ],
+                  "path": [
+                    "api",
+                    "pedidos",
+                    "{{idPedido}}",
+                    "estado"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"estado\": \"CANCELADO\"\n}"
+                }
+              }
+            },
+            {
+              "name": "Eliminar pedido (DELETE)",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base}}/api/pedidos/{{idPedido}}",
+                  "host": [
+                    "{{base}}"
+                  ],
+                  "path": [
+                    "api",
+                    "pedidos",
+                    "{{idPedido}}"
+                  ]
+                },
+                "description": "Solo pedidos PENDIENTE o CANCELADO."
+              }
+            }
+          ]
+        },
+        {
+          "name": "Historial de estados",
+          "item": [
+            {
+              "name": "Listar (GET)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base}}/api/historial-estados",
+                  "host": [
+                    "{{base}}"
+                  ],
+                  "path": [
+                    "api",
+                    "historial-estados"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Listar historial de un pedido (GET)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base}}/api/historial-estados?idPedido={{idPedido}}",
+                  "host": [
+                    "{{base}}"
+                  ],
+                  "path": [
+                    "api",
+                    "historial-estados"
+                  ],
+                  "query": [
+                    {
+                      "key": "idPedido",
+                      "value": "{{idPedido}}"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Buscar por id (GET)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base}}/api/historial-estados/1",
+                  "host": [
+                    "{{base}}"
+                  ],
+                  "path": [
+                    "api",
+                    "historial-estados",
+                    "1"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Crear (POST)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base}}/api/historial-estados",
+                  "host": [
+                    "{{base}}"
+                  ],
+                  "path": [
+                    "api",
+                    "historial-estados"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"pedido\": {\n    \"idPedido\": 1\n  },\n  \"estado\": \"PENDIENTE\",\n  \"fechaHora\": \"2026-10-19T19:00:00\",\n  \"usuario\": {\n    \"idUsuario\": 1\n  }\n}"
+                }
+              }
+            },
+            {
+              "name": "Reemplazar (PUT)",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base}}/api/historial-estados/1",
+                  "host": [
+                    "{{base}}"
+                  ],
+                  "path": [
+                    "api",
+                    "historial-estados",
+                    "1"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"pedido\": {\n    \"idPedido\": 1\n  },\n  \"estado\": \"PENDIENTE\",\n  \"fechaHora\": \"2026-10-19T19:00:00\",\n  \"usuario\": {\n    \"idUsuario\": 1\n  }\n}"
+                }
+              }
+            },
+            {
+              "name": "Editar parcial (PATCH)",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base}}/api/historial-estados/1",
+                  "host": [
+                    "{{base}}"
+                  ],
+                  "path": [
+                    "api",
+                    "historial-estados",
+                    "1"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"estado\": \"EN_PREPARACION\"\n}"
+                }
+              }
+            },
+            {
+              "name": "Eliminar (DELETE)",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base}}/api/historial-estados/1",
+                  "host": [
+                    "{{base}}"
+                  ],
+                  "path": [
+                    "api",
+                    "historial-estados",
+                    "1"
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "RF-03 Asignación de mesa",
+      "item": [
+        {
+          "name": "Mesas",
+          "item": [
+            {
+              "name": "Listar (GET)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base}}/api/mesas",
+                  "host": [
+                    "{{base}}"
+                  ],
+                  "path": [
+                    "api",
+                    "mesas"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Buscar por id (GET)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base}}/api/mesas/6",
+                  "host": [
+                    "{{base}}"
+                  ],
+                  "path": [
+                    "api",
+                    "mesas",
+                    "6"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Crear (POST)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base}}/api/mesas",
+                  "host": [
+                    "{{base}}"
+                  ],
+                  "path": [
+                    "api",
+                    "mesas"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"numero\": 6,\n  \"capacidad\": 4,\n  \"estado\": \"LIBRE\"\n}"
+                }
+              }
+            },
+            {
+              "name": "Reemplazar (PUT)",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base}}/api/mesas/6",
+                  "host": [
+                    "{{base}}"
+                  ],
+                  "path": [
+                    "api",
+                    "mesas",
+                    "6"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"numero\": 6,\n  \"capacidad\": 6,\n  \"estado\": \"LIBRE\"\n}"
+                }
+              }
+            },
+            {
+              "name": "Editar parcial (PATCH)",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base}}/api/mesas/6",
+                  "host": [
+                    "{{base}}"
+                  ],
+                  "path": [
+                    "api",
+                    "mesas",
+                    "6"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"capacidad\": 8\n}"
+                }
+              }
+            },
+            {
+              "name": "Eliminar (DELETE)",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base}}/api/mesas/6",
+                  "host": [
+                    "{{base}}"
+                  ],
+                  "path": [
+                    "api",
+                    "mesas",
+                    "6"
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Asignar pedido a una mesa",
+          "item": [
+            {
+              "name": "Ver mesas (GET)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base}}/api/mesas",
+                  "host": [
+                    "{{base}}"
+                  ],
+                  "path": [
+                    "api",
+                    "mesas"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Asignar el pedido a otra mesa (PUT) - login mesero",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base}}/api/pedidos/{{idPedido}}/mesa",
+                  "host": [
+                    "{{base}}"
+                  ],
+                  "path": [
+                    "api",
+                    "pedidos",
+                    "{{idPedido}}",
+                    "mesa"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"idMesa\": 2\n}"
+                },
+                "description": "La mesa nueva debe estar LIBRE y tener capacidad; la anterior queda LIBRE."
+              }
+            },
+            {
+              "name": "Mesa ocupada (debe dar 409)",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base}}/api/pedidos/{{idPedido}}/mesa",
+                  "host": [
+                    "{{base}}"
+                  ],
+                  "path": [
+                    "api",
+                    "pedidos",
+                    "{{idPedido}}",
+                    "mesa"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"idMesa\": 1\n}"
+                },
+                "description": "Si la mesa 1 está OCUPADA responde 409."
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "RF-04 Productos del pedido",
+      "item": [
+        {
+          "name": "Categorías",
+          "item": [
+            {
+              "name": "Listar (GET)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base}}/api/categorias",
+                  "host": [
+                    "{{base}}"
+                  ],
+                  "path": [
+                    "api",
+                    "categorias"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Buscar por id (GET)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base}}/api/categorias/3",
+                  "host": [
+                    "{{base}}"
+                  ],
+                  "path": [
+                    "api",
+                    "categorias",
+                    "3"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Crear (POST)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base}}/api/categorias",
+                  "host": [
+                    "{{base}}"
+                  ],
+                  "path": [
+                    "api",
+                    "categorias"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nombre\": \"Postres\"\n}"
+                }
+              }
+            },
+            {
+              "name": "Reemplazar (PUT)",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base}}/api/categorias/3",
+                  "host": [
+                    "{{base}}"
+                  ],
+                  "path": [
+                    "api",
+                    "categorias",
+                    "3"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nombre\": \"Postres y dulces\"\n}"
+                }
+              }
+            },
+            {
+              "name": "Editar parcial (PATCH)",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base}}/api/categorias/3",
+                  "host": [
+                    "{{base}}"
+                  ],
+                  "path": [
+                    "api",
+                    "categorias",
+                    "3"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nombre\": \"Postres 2\"\n}"
+                }
+              }
+            },
+            {
+              "name": "Eliminar (DELETE)",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base}}/api/categorias/3",
+                  "host": [
+                    "{{base}}"
+                  ],
+                  "path": [
+                    "api",
+                    "categorias",
+                    "3"
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Productos",
+          "item": [
+            {
+              "name": "Listar (GET)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base}}/api/productos",
+                  "host": [
+                    "{{base}}"
+                  ],
+                  "path": [
+                    "api",
+                    "productos"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Buscar por id (GET)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base}}/api/productos/5",
+                  "host": [
+                    "{{base}}"
+                  ],
+                  "path": [
+                    "api",
+                    "productos",
+                    "5"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Crear (POST)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base}}/api/productos",
+                  "host": [
+                    "{{base}}"
+                  ],
+                  "path": [
+                    "api",
+                    "productos"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nombre\": \"Tres leches\",\n  \"descripcion\": \"Postre de la casa\",\n  \"precio\": 9500,\n  \"categoria\": {\n    \"idCategoria\": 1\n  },\n  \"disponible\": true\n}"
+                }
+              }
+            },
+            {
+              "name": "Reemplazar (PUT)",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base}}/api/productos/5",
+                  "host": [
+                    "{{base}}"
+                  ],
+                  "path": [
+                    "api",
+                    "productos",
+                    "5"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nombre\": \"Tres leches\",\n  \"descripcion\": \"Postre de la casa\",\n  \"precio\": 10000,\n  \"categoria\": {\n    \"idCategoria\": 1\n  },\n  \"disponible\": true\n}"
+                }
+              }
+            },
+            {
+              "name": "Editar parcial (PATCH)",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base}}/api/productos/5",
+                  "host": [
+                    "{{base}}"
+                  ],
+                  "path": [
+                    "api",
+                    "productos",
+                    "5"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"precio\": 11000\n}"
+                }
+              }
+            },
+            {
+              "name": "Eliminar (DELETE)",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base}}/api/productos/5",
+                  "host": [
+                    "{{base}}"
+                  ],
+                  "path": [
+                    "api",
+                    "productos",
+                    "5"
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Productos del pedido",
+          "item": [
+            {
+              "name": "Agregar producto al pedido (POST) - login mesero",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base}}/api/detalles-pedido",
+                  "host": [
+                    "{{base}}"
+                  ],
+                  "path": [
+                    "api",
+                    "detalles-pedido"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"pedido\": {\n    \"idPedido\": {{idPedido}}\n  },\n  \"producto\": {\n    \"idProducto\": 1\n  },\n  \"cantidad\": 2\n}"
+                },
+                "description": "El precio y el subtotal los calcula el servidor. Solo se agregan productos disponibles."
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Producto agregado', () => pm.response.to.have.status(201));",
+                      "pm.collectionVariables.set('idDetalle', pm.response.json().idDetalle);"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Listar todos (GET)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base}}/api/detalles-pedido",
+                  "host": [
+                    "{{base}}"
+                  ],
+                  "path": [
+                    "api",
+                    "detalles-pedido"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Listar los de un pedido (GET)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base}}/api/detalles-pedido?idPedido={{idPedido}}",
+                  "host": [
+                    "{{base}}"
+                  ],
+                  "path": [
+                    "api",
+                    "detalles-pedido"
+                  ],
+                  "query": [
+                    {
+                      "key": "idPedido",
+                      "value": "{{idPedido}}"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Buscar por id (GET)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base}}/api/detalles-pedido/{{idDetalle}}",
+                  "host": [
+                    "{{base}}"
+                  ],
+                  "path": [
+                    "api",
+                    "detalles-pedido",
+                    "{{idDetalle}}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Cambiar cantidad y notas (PUT)",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base}}/api/detalles-pedido/{{idDetalle}}",
+                  "host": [
+                    "{{base}}"
+                  ],
+                  "path": [
+                    "api",
+                    "detalles-pedido",
+                    "{{idDetalle}}"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"cantidad\": 3,\n  \"notas\": \"Sin cebolla\"\n}"
+                }
+              }
+            },
+            {
+              "name": "Cambiar solo la cantidad (PATCH)",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base}}/api/detalles-pedido/{{idDetalle}}",
+                  "host": [
+                    "{{base}}"
+                  ],
+                  "path": [
+                    "api",
+                    "detalles-pedido",
+                    "{{idDetalle}}"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"cantidad\": 1\n}"
+                }
+              }
+            },
+            {
+              "name": "Quitar producto del pedido (DELETE)",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base}}/api/detalles-pedido/{{idDetalle}}",
+                  "host": [
+                    "{{base}}"
+                  ],
+                  "path": [
+                    "api",
+                    "detalles-pedido",
+                    "{{idDetalle}}"
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "RF-05 Registro de observaciones",
+      "item": [
+        {
+          "name": "Agregar producto con observación (POST) - login mesero",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base}}/api/detalles-pedido",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "detalles-pedido"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pedido\": {\n    \"idPedido\": {{idPedido}}\n  },\n  \"producto\": {\n    \"idProducto\": 2\n  },\n  \"cantidad\": 1,\n  \"notas\": \"Sin cebolla, bien cocido\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Producto agregado', () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set('idDetalle', pm.response.json().idDetalle);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Registrar o cambiar la observación (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base}}/api/detalles-pedido/{{idDetalle}}/notas",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "detalles-pedido",
+                "{{idDetalle}}",
+                "notas"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"notas\": \"Sin cebolla y sin picante\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Borrar la observación (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base}}/api/detalles-pedido/{{idDetalle}}/notas",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "detalles-pedido",
+                "{{idDetalle}}",
+                "notas"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"notas\": \"\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Cocina ve las observaciones del pedido (GET) - login cocina",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/pedidos/{{idPedido}}/detalles",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "pedidos",
+                "{{idPedido}}",
+                "detalles"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
