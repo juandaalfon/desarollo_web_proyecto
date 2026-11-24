@@ -31,7 +31,7 @@ public class ConsolaCrud<T> {
     public ConsolaCrud(String titulo, Class<T> clase, Scanner sc) {
         this.titulo = titulo;
         this.clase = clase;
-        this.dao = new GenericDAO<>(clase);
+        this.dao = GenericDAO.para(clase); // para Usuario entrega UsuarioDAO, que cifra la contraseña con BCrypt
         this.sc = sc;
     }
 

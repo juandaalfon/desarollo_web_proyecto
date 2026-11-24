@@ -1,67 +1,73 @@
 package main;
 
+import security.Sesion;
+import api.exception.NoAutenticadoException;
+import api.exception.OperacionInvalidaException;
+import api.exception.ProhibidoException;
+import api.service.AuthService;
 import util.JPAUtil;
+import util.Semilla;
 
 import java.util.Scanner;
-import model.Rol;
-import model.Usuario;
-import model.Mesa;
-import model.Categoria;
-import model.Producto;
-import model.Pedido;
-import model.DetallePedido;
-import model.HistorialEstado;
-import model.Factura;
 
 /**
- * Menú principal: elige la tabla sobre la que se quiere hacer el CRUD (acceso con ORM/Hibernate).
+ * Consola con teclado. RF-01: primero se inicia sesión con usuario y contraseña y, según el rol,
+ * se abre el menú de Administración, de Mesero o de Cocina.
+ *
+ * Usuarios de prueba (los crea la Semilla la primera vez):
+ *   admin / admin123     mesero / mesero123     cocina / cocina123
  */
 public class Main {
 
-    private static final Object[][] TABLAS = {
-        {"Rol", Rol.class},
-        {"Usuario", Usuario.class},
-        {"Mesa", Mesa.class},
-        {"Categoría", Categoria.class},
-        {"Producto", Producto.class},
-        {"Pedido", Pedido.class},
-        {"Detalle de pedido", DetallePedido.class},
-        {"Historial de estado", HistorialEstado.class},
-        {"Factura", Factura.class},
-    };
+    private static final int MAX_INTENTOS = 3;
 
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int opcion;
-
-        do {
-            System.out.println("========= RESTAURANTE - CRUD CON ORM (Hibernate) =========");
-            for (int i = 0; i < TABLAS.length; i++) {
-                System.out.println((i + 1) + ". " + TABLAS[i][0]);
+        Entrada in = new Entrada(new Scanner(System.in));
+        try {
+            Semilla.ejecutar();
+            Sesion sesion = iniciarSesion(in);
+            if (sesion != null) {
+                abrirMenu(sesion, in);
             }
-            System.out.println("0. Salir");
-            System.out.print("Elige una tabla: ");
-
-            try {
-                opcion = Integer.parseInt(sc.nextLine().trim());
-            } catch (NumberFormatException e) {
-                opcion = -1;
-            }
-
-            if (opcion >= 1 && opcion <= TABLAS.length) {
-                abrir((String) TABLAS[opcion - 1][0], (Class<?>) TABLAS[opcion - 1][1], sc);
-            } else if (opcion != 0) {
-                System.out.println("Opción no válida.");
-            }
-            System.out.println();
-        } while (opcion != 0);
-
-        JPAUtil.cerrar();
-        sc.close();
+        } finally {
+            JPAUtil.cerrar();
+        }
         System.out.println("Hasta pronto.");
     }
 
-    private static <T> void abrir(String titulo, Class<T> clase, Scanner sc) {
-        new ConsolaCrud<>(titulo, clase, sc).ejecutar();
+    private static Sesion iniciarSesion(Entrada in) {
+        AuthService auth = new AuthService();
+        System.out.println("RESTAURANTE - INICIAR SESIÓN");
+        for (int intento = 1; intento <= MAX_INTENTOS; intento++) {
+            String usuario = in.texto("Usuario: ");
+            String contrasena = in.texto("Contraseña: ");
+            try {
+                Sesion sesion = auth.login(usuario, contrasena);
+                System.out.println("Bienvenido, " + sesion.nombre() + " (" + sesion.rol() + ")");
+                System.out.println();
+                return sesion;
+            } catch (NoAutenticadoException | OperacionInvalidaException | ProhibidoException e) {
+                System.out.println(e.getMessage() + " (intento " + intento + " de " + MAX_INTENTOS + ")");
+            }
+        }
+        System.out.println("Demasiados intentos fallidos.");
+        return null;
+    }
+
+    private static void abrirMenu(Sesion sesion, Entrada in) {
+        switch (sesion.tipoRol()) {
+            case ADMINISTRADOR:
+                new MenuAdmin(in).ejecutar();
+                break;
+            case MESERO:
+                new MenuMesero(sesion, in).ejecutar();
+                break;
+            case COCINA:
+                new MenuCocina(sesion, in).ejecutar();
+                break;
+            default:
+                System.out.println("Tu rol no tiene un menú asignado.");
+                break;
+        }
     }
 }

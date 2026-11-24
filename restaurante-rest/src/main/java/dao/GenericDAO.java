@@ -21,6 +21,18 @@ public class GenericDAO<T> {
         this.clase = clase;
     }
 
+    /**
+     * Fábrica: entrega el DAO adecuado para cada entidad. Usuario usa UsuarioDAO, que cifra
+     * la contraseña con BCrypt antes de guardarla; las demás usan el DAO genérico.
+     */
+    @SuppressWarnings("unchecked")
+    public static <E> GenericDAO<E> para(Class<E> clase) {
+        if (clase == model.Usuario.class) {
+            return (GenericDAO<E>) new UsuarioDAO();
+        }
+        return new GenericDAO<>(clase);
+    }
+
     /** INSERT. Tras persistir, la entidad queda con su id generado. */
     public boolean crear(T entidad) {
         EntityManager em = JPAUtil.crearEntityManager();

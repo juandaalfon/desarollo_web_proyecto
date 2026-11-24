@@ -1,6 +1,6 @@
 package api.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import api.service.FacturaService;
 import model.Factura;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/facturas")
 public class FacturaController extends CrudController<Factura> {
 
-    public FacturaController(ObjectMapper mapper) {
-        super(Factura.class, mapper);
+    public FacturaController(FacturaService servicio) {
+        super(servicio);
     }
 }

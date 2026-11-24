@@ -29,6 +29,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+        <!-- Para guardar las contraseñas como hash BCrypt (solo la parte de cifrado, sin activar login) -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-crypto</artifactId>
+        </dependency>
         <!-- ORM: Hibernate (implementación de JPA 3.1 / jakarta.persistence); versión gestionada por Spring Boot -->
         <dependency>
             <groupId>org.hibernate.orm</groupId>

@@ -1,6 +1,6 @@
 package api.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import api.service.RolService;
 import model.Rol;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/roles")
 public class RolController extends CrudController<Rol> {
 
-    public RolController(ObjectMapper mapper) {
-        super(Rol.class, mapper);
+    public RolController(RolService servicio) {
+        super(servicio);
     }
 }
