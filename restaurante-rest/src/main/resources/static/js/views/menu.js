@@ -1,4 +1,4 @@
-// RF-11 / RF-12: productos (con disponibilidad) y categorías.
+// aporte de la web get, delete y put producto
 import { api } from '../api.js';
 import { h, dinero, si, intentar } from '../ui.js';
 import { tablaCrud } from './crud.js';
