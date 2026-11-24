@@ -1,4 +1,4 @@
-// RF-06 / RF-07: cola de cocina. Pendientes (más antiguos primero) y pedidos en preparación.
+// aporte de la web get y patch preparacion
 import { api } from '../api.js';
 import { h, vaciar, intentar, vacio, hora, minutosDesde } from '../ui.js';
 
