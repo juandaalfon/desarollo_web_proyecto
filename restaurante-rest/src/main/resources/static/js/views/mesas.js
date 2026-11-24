@@ -1,4 +1,4 @@
-// RF-13: estado de las mesas. El administrador además crea, edita y elimina mesas.
+// aporte de la web get, delete y put mesa
 import { api, norm } from '../api.js';
 import { h, vaciar, badge, intentar, vacio } from '../ui.js';
 import { abrirFormulario, eliminarConConfirmacion } from './crud.js';
